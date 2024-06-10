@@ -1,18 +1,19 @@
 #!/usr/bin/node
+
 const request = require('request');
-const argv = require('process').argv;
 
-const url = `https://swapi-api.alx-tools.com/api/films/${argv[2]}/`;
-// console.log(url);
-request({ url }, async (error, response, body) => {
-  if (error) return console.error(error);
+const movieId = process.argv[2];
 
-  const urlChars = JSON.parse(body).characters;
-  // console.log(urlChar);
-  for (const url of urlChars) {
+const url = `https://swapi-api.hbtn.io/api/films/${movieId}`;
+
+request(url, async (err, res, body) => {
+  err && console.log(err);
+
+  const charactersArray = JSON.parse(res.body).characters;
+  for (const character of charactersArray) {
     await new Promise((resolve, reject) => {
-      request(url, (error, response, body) => {
-        if (error) return console.log(error);
+      request(character, (err, res, body) => {
+        err && console.log(err);
 
         console.log(JSON.parse(body).name);
         resolve();
