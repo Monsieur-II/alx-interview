@@ -3,23 +3,22 @@
 
 
 def makeChange(coins, total):
-    """Determine the fewest number of coins needed to make change for total.
-
-    Args:
-        coins: A list of the values of the coins in your possession.
-        total: An integer representing the total to make change for.
-
-    Returns:
-        Fewest number of coins needed to make change for total.
+    """Determines the fewest number of coins needed to meet a given
+    amount total when given a pile of coins of different values.
     """
     if total <= 0:
         return 0
-
-    coins.sort(reverse=True)
-    num_coins = 0
-    for coin in coins:
-        if total <= 0:
-            break
-        num_coins += total // coin
-        total %= coin
-    return num_coins
+    rem = total
+    coins_count = 0
+    coin_idx = 0
+    sorted_coins = sorted(coins, reverse=True)
+    n = len(coins)
+    while rem > 0:
+        if coin_idx >= n:
+            return -1
+        if rem - sorted_coins[coin_idx] >= 0:
+            rem -= sorted_coins[coin_idx]
+            coins_count += 1
+        else:
+            coin_idx += 1
+    return coins_count
